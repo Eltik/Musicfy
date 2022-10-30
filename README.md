@@ -9,5 +9,6 @@ Music bot utilizing PlayDL.
 4. Navigate to `/node_modules/play-dl/dist/index.js`.
 5. Replace the entire file with the contents of `play-dl.fix.js`.
 6. Run `node index` to start the bot.
+7. If slash commands aren't added, run `node deploy-commands` to deploy them.
 
 Modify the `config.json` file as needed.
