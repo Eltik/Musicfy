@@ -1,0 +1,7 @@
+{
+    "token": "bot_token",
+    "clientId":"client_id",
+    "guildId":"guild_id",
+    "scClientID":"soundcloud_token",
+    "antiCrash":true
+}
