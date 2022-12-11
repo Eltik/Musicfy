@@ -20,6 +20,45 @@ module.exports.run = async (interaction) => {
         // https://www.npmjs.com/package/soundcloud
         // https://www.npmjs.com/package/genius-lyrics-api
         // PLAY-DL HAS SOUNDCLOUD AND SPOTIFY SUPPORT
+        if (playdl.is_expired()) {
+            await playdl.refreshToken() // This will check if access token has expired or not. If yes, then refresh the token.
+        }
+        let query = interaction.options.getString("search");
+        // If the user isn't connected to a VC.
+        if (!interaction.member.voice.channel) {
+            const genresEmbed = new Discord.EmbedBuilder()
+                .setColor("#fe8181")
+                .setDescription("You need to be in a voice channel to play audio!")
+                .setTimestamp();
+            interaction.reply({ embeds: [genresEmbed], ephemeral: true });
+        } else {
+            const loadingEmbed = new Discord.EmbedBuilder()
+                .setColor("#84d2e1")
+                .setDescription("Loading...")
+                .setTimestamp();
+            await interaction.reply({ embeds: [loadingEmbed], fetchReply: true }).then(async (msg) => {
+                await interaction.channel.messages.fetch(msg.id).then(async (message) => {
+                    if (!message) {
+                        return;
+                    }
+                    if (!interaction.member.voice.channel) {
+                        const errorEmbed = new Discord.EmbedBuilder()
+                            .setColor("#fe8181")
+                            .setDescription("You need to be in a voice channel to play audio!")
+                            .setTimestamp();
+                        message.edit({ embeds: [errorEmbed] });
+                    } else {
+                        // SPOTIFY THING
+                    }
+                }).catch((err) => {
+                    console.error(err);
+                    functions.sendError(functions.objToString(err), interaction.guild, "Commands");
+                });
+            }).catch((err) => {
+                console.error(err);
+                functions.sendError(functions.objToString(err), interaction.guild, "Commands");
+            });
+        }
     }
 
     if (interaction.options.getSubcommand() === "soundcloud") {
